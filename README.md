@@ -1,5 +1,5 @@
 # HypergraphsYelp.jl
-Modeling the yelp dataset challenge with hypergraphs.
+Modeling the yelp dataset with hypergraphs.
 
 
 | **Build Status** |
