@@ -1,4 +1,4 @@
-# hypergraphs-yelp
+# HypergraphsYelp.jl
 Modeling the yelp dataset challenge with hypergraphs.
 
 
