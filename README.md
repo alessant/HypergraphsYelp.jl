@@ -8,7 +8,7 @@ Modeling the yelp dataset challenge with hypergraphs.
 
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
-[docs-dev-url]: https://github.com/aleant93/hypergraphs-yelp.jl/editlatest
+[docs-dev-url]: https://github.com/aleant93/HypergraphsYelp.jl/editlatest
 
 [travis-img]: https://travis-ci.com/aleant93/HypergraphsYelp.jl.svg?branch=master
 [travis-url]: https://travis-ci.com/aleant93/HypergraphsYelp.jl
