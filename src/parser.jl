@@ -4,30 +4,40 @@ struct Model
     users::Dict{String,User}
     reviews::Dict{String,Review}
 end
-function loadBusiness(path::String)
+
+function loadBusiness(io::IO, lines::Int)
     result = Dict{String,Business}()
-    lines = readlines(path)
-    for line in lines
+    counter = 0
+
+    while counter < lines && !eof(io)
+        line = readline(io)
         json = JSON.parse(line)
         b = Business(
-            json["business_id"],
-            json["name"],
-            json["city"],
-            json["state"],
-            json["latitude"],
-            json["longitude"],
-            json["stars"],
-            json["review_count"],
-            json["categories"]!=nothing ? split(json["categories"],",") : Vector{String}()
-        )
-        push!(result,json["business_id"]=>b)
+               json["business_id"],
+               json["name"],
+               json["city"],
+               json["state"],
+               json["latitude"],
+               json["longitude"],
+               json["stars"],
+               json["review_count"],
+               json["categories"]!=nothing ? map(strip, split(json["categories"],",")) : Vector{String}()
+         )
+         push!(result,json["business_id"]=>b)
+
+         counter += 1
     end
     return result
 end
-function loadUsers(path::String)
+
+
+function loadUsers(io::IO, lines::Int)
     result = Dict{String,User}()
-    lines = readlines(path)
-    for line in lines
+    #lines = readlines(path)
+    counter = 0
+
+    while counter < lines && !eof(io)
+        line = readline(io)
         json = JSON.parse(line)
 
         totcompliments = 0
@@ -50,18 +60,25 @@ function loadUsers(path::String)
             json["review_count"],
             totcompliments,
             json["average_stars"],
-            json["friends"]!=nothing ? split(json["friends"],",") : Vector{String}()
+            json["friends"]!=nothing ?  map(strip, split(json["friends"],",")) : Vector{String}()
         )
         push!(result,json["user_id"]=>b)
+
+        counter += 1
     end
     return result
 end
 
 
-function loadReview(path::String)
+function loadReview(io::IO, lines::Int)
     result = Dict{String,Review}()
-    lines = readlines(path)
-    for line in lines
+    #lines = readlines(path)
+    #linescnt = length(lines)
+    #toload = (linescnt * loadfactor) / 100
+    counter = 0
+
+    while counter < lines && !eof(io)
+        line = readline(io)
         json = JSON.parse(line)
         b = Review(
             json["review_id"],
@@ -74,21 +91,24 @@ function loadReview(path::String)
             json["cool"]
         )
         push!(result,json["review_id"]=>b)
+
+        counter += 1
     end
     return result
 end
 
 
+
 """
     path, is the directory with business.json, review.json, and user.json
 """
-function loadData(path::AbstractString)
+function loadData(path::AbstractString, lines::Int=typemax(Int))
 
-    businesses = loadBusiness(string(path,Base.Filesystem.path_separator,"business.json"))
+    businesses = loadBusiness(open(string(path,Base.Filesystem.path_separator,"business.json"), "r"), lines)
 
-    users = loadUsers(string(path,Base.Filesystem.path_separator,"user.json"))
+    users = loadUsers(open(string(path,Base.Filesystem.path_separator,"user.json"), "r"), lines)
 
-    reviews = loadReview(string(path,Base.Filesystem.path_separator,"review.json"))
+    reviews = loadReview(open(string(path,Base.Filesystem.path_separator,"review.json"), "r"), 0)
 
     return Model(businesses, users, reviews)
 end
