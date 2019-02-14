@@ -33,7 +33,6 @@ end
 
 function loadUsers(io::IO, lines::Int)
     result = Dict{String,User}()
-    #lines = readlines(path)
     counter = 0
 
     while counter < lines && !eof(io)
@@ -72,9 +71,6 @@ end
 
 function loadReview(io::IO, lines::Int)
     result = Dict{String,Review}()
-    #lines = readlines(path)
-    #linescnt = length(lines)
-    #toload = (linescnt * loadfactor) / 100
     counter = 0
 
     while counter < lines && !eof(io)
@@ -108,7 +104,7 @@ function loadData(path::AbstractString, lines::Int=typemax(Int))
 
     users = loadUsers(open(string(path,Base.Filesystem.path_separator,"user.json"), "r"), lines)
 
-    reviews = loadReview(open(string(path,Base.Filesystem.path_separator,"review.json"), "r"), 0)
+    reviews = loadReview(open(string(path,Base.Filesystem.path_separator,"review.json"), "r"), lines)
 
     return Model(businesses, users, reviews)
 end
