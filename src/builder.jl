@@ -2,7 +2,7 @@
 
 function yelpHG(model::Model)
 
-    h = Hypergraph{Real,Business,Vector{Review}}(0,0)
+    h = Hypergraph{Real,Business,Array{Review,1}}(0,0)
     businesses_ids = Dict{AbstractString,Business}()
     verticies_ids = Dict{Business,Int}()
     for business in values(model.businesses)
@@ -12,20 +12,22 @@ function yelpHG(model::Model)
         push!(verticies_ids, business=>v)
     end
 
-    users_review = Dict{AbstractString, Dict{Int, Vector{Review}}}()
+    users_review = Dict{AbstractString, Dict{Int, Array{Review,1}}}()
     for review in values(model.reviews)
         if haskey(businesses_ids,review.business)
+
             business = businesses_ids[review.business]
             vertex = verticies_ids[business]
+
             user = review.user
 
             if !haskey(users_review,user)
-                users_review[user] = Dict{Int, Vector{Review}}()
+                push!(users_review, user=>Dict{Int, Array{Review,1}}())
             end
 
 
             if !haskey(users_review[user],vertex)
-                d = Vector{Review}()
+                d = Array{Review,1}()
             else
                 d = users_review[user][vertex]
             end
@@ -36,13 +38,21 @@ function yelpHG(model::Model)
     end
 
     for ureview in values(users_review)
-
+        meta = Array{Review,1}()
+        for reviews in values(ureview)
+            for review in reviews
+                push!(meta, review)
+            end
+        end
+        verticies = Dict{Int,Real}()
         for v in keys(ureview)
-
-            set_hyperedge_meta!(h,ureview.second,e)
+            push!(verticies,v=>0)
         end
         e = add_hyperedge!(h)
-
+        for v in vertices
+            h[v,e] = 0
+        end
+        set_hyperedge_meta!(h,meta,e)
     end
 
     return h
