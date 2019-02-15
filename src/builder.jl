@@ -3,18 +3,20 @@
 function yelpHG(model::Model)
 
     h = Hypergraph{Real,Business,Array{Review,1}}(0,0)
+
     businesses_ids = Dict{AbstractString,Business}()
     verticies_ids = Dict{Business,Int}()
     for business in values(model.businesses)
         push!(businesses_ids, business.id=>business)
         v = SimpleHypergraphs.add_vertex!(h)
+    #    println("BUSINESS MAP ",business.id," ",v)
         set_vertex_meta!(h,business,v)
         push!(verticies_ids, business=>v)
     end
 
     users_review = Dict{AbstractString, Dict{Int, Array{Review,1}}}()
     for review in values(model.reviews)
-        if haskey(businesses_ids,review.business)
+        if haskey(businesses_ids,review.business)#IF I DON'T LOAD ALL BUSINESS
 
             business = businesses_ids[review.business]
             vertex = verticies_ids[business]
@@ -44,12 +46,10 @@ function yelpHG(model::Model)
                 push!(meta, review)
             end
         end
+        e = add_hyperedge!(h)
+
         verticies = Dict{Int,Real}()
         for v in keys(ureview)
-            push!(verticies,v=>0)
-        end
-        e = add_hyperedge!(h)
-        for v in keys(verticies)
             h[v,e] = 0
         end
         set_hyperedge_meta!(h,meta,e)
@@ -60,37 +60,99 @@ function yelpHG(model::Model)
 end
 
 function forecastNumberOfStar(h::Hypergraph)
-
-    herr = 0
+    herr = 0.0
+    hupred = 0
     for vertex in 1:size(h)[1]
-        avg = 0.0
-        treview = 0
+
+        if length(gethyperedges(h,vertex)) == 0
+            hupred+=1
+            continue
+        end
+        avgs = Real[]
+
         for edge in gethyperedges(h,vertex)
-            
-            for review in get_hyperedge_meta(h,edge[1])
-                avg += review.stars
-                treview+=1
+
+            if length(getvertices(h,edge[1])) < 2
+                continue
             end
 
-        end
-        avg = avg/treview
-        if abs(avg - get_vertex_meta(h,vertex).stars) > 1.0
-            herr += 1
-        end
-    end
+            pavg = 0.0
+            ptreview = 0
 
-    g = SimpleGraph(TwoSectionView(h))
-    gerr = 0
+            for v2 in getvertices(h,edge[1])
+                if v2 != vertex
+                    pavg += get_vertex_meta(h,v2[1]).stars
+                    ptreview+=1
+                end
+            end
+
+            push!(avgs,pavg/ptreview)
+
+
+        end
+        if length(avgs) == 0
+            hupred += 1
+            continue
+        end
+        avg = sum(avgs)/length(avgs)
+
+        herr+= abs(avg - get_vertex_meta(h,vertex).stars)
+        #println("H ",vertex ," ",avg )
+    end
+    #t = TwoSectionView(h)
+    #g = SimpleGraph(t)
+    g = TwoSectionViewWeighted(h)
+    gerr = 0.0
+    gupred = 0
     for v1 in vertices(g)
+        if length(all_neighbors(g,v1))==0
+            gupred+=1
+            continue
+        end
         avg = 0.0
+        weight = 0.0
         for v2 in all_neighbors(g,v1)
-            avg +=  get_vertex_meta(h,v2).stars
+            avg += get_vertex_meta(h,v2).stars * g.weights[v1,v2]
+            weight += g.weights[v1,v2]
+            #println(v1,"-",v2,"=",g.weights[v1,v2])
         end
-        avg = avg/length(all_neighbors(g,v1))
-        if abs(avg - get_vertex_meta(h,v1).stars) > 1.0
-            gerr += 1
-        end
+        avg = avg/weight
+        gerr += abs(avg - get_vertex_meta(h,v1).stars)
+        #println("G ",v1 ," ",avg)
     end
 
-    return herr/size(h)[1],  gerr/size(h)[1]
+
+    #return herr,  gerr
+    return herr/(size(h)[1] - hupred), (size(h)[1] - hupred),  gerr/(size(h)[1] - gupred), (size(h)[1] - gupred)
+end
+
+function TwoSectionViewWeighted(h::Hypergraph)
+
+    g = SimpleWeightedGraph(size(h)[1])
+
+    edges = Dict{Pair{Int,Int},Int}()
+
+    hes = Set{Int}()
+    for v in 1:size(h)[1]
+        for he in keys(h.v2he[v])
+            union!(hes, he)
+        end
+    end
+    for he in values(hes)
+        for v1 in keys(h.he2v[he])
+            for v2 in keys(h.he2v[he])
+                if v1 < v2
+                    if haskey(edges, v1=>v2)
+                        edges[v1=>v2] = (edges[v1=>v2][1]+1)
+                    else
+                        push!(edges,(v1=>v2)=>1)
+                    end
+                end
+            end
+        end
+    end
+    for e in keys(edges)
+        add_edge!(g, e[1], e[2], edges[e])
+    end
+    g
 end

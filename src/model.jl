@@ -31,3 +31,9 @@ struct Review
     funny::Int
     cool::Int
 end
+
+struct Model
+    businesses::Dict{String,Business}
+    users::Dict{String,User}
+    reviews::Dict{String,Review}
+end

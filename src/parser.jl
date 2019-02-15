@@ -1,9 +1,4 @@
 
-struct Model
-    businesses::Dict{String,Business}
-    users::Dict{String,User}
-    reviews::Dict{String,Review}
-end
 
 function loadBusiness(io::IO, lines::Int)
     result = Dict{String,Business}()
@@ -100,7 +95,7 @@ end
 """
 function loadData(path::AbstractString, lines::Int=typemax(Int))
 
-    businesses = loadBusiness(open(string(path,Base.Filesystem.path_separator,"business.json"), "r"), lines)
+    businesses = loadBusiness(open(string(path,Base.Filesystem.path_separator,"business.json"), "r"), typemax(Int))
 
     users = loadUsers(open(string(path,Base.Filesystem.path_separator,"user.json"), "r"), lines)
 

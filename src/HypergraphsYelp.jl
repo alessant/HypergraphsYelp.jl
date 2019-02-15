@@ -5,17 +5,16 @@ __precompile__()
 module HypergraphsYelp
 
 using JSON
-using SimpleHypergraphs
+using SimpleHypergraphs, SimpleWeightedGraphs
 using LightGraphs
 using PyPlot
 using GraphPlot
 using Juno
-using Cairo, Fontconfig
-using Compose
 
 
-export Business, User, Review
-export Model, loadData
+
+export Business, User, Review, Model
+export loadData
 export plotBusinessByCategories, plotBusinessByCities, plotBusinessByStates, plotBusinessByStars
 export plotUsersByReviewCount, plotUsersByFriendsCount,plotUsersByComplimentsCount
 export yelpHG, forecastNumberOfStar
@@ -25,20 +24,7 @@ include("parser.jl")
 include("analyzer.jl")
 include("builder.jl")
 
- println("Loading data ..")
- @time model = loadData("data",1000)
 
-# buildAnalysis("plots")
-
-h = yelpHG(model)
-
-t = TwoSectionView(h)
-twosection_graph = LightGraphs.SimpleGraph(t)
-
-draw(PNG("mygraph.png", 8cm, 8cm), gplot(twosection_graph))
-
-
-println(forecastNumberOfStar(h))
 
 
 end
