@@ -4,7 +4,12 @@ authors = ["aleant93 <aless.antelmi@gmail.com>"]
 version = "0.1.0"
 
 [deps]
+Cairo = "159f3aea-2a34-519c-b102-8c37f9878175"
+Compose = "a81c6b42-2e10-5240-aca2-a61377ecd94b"
+Fontconfig = "186bb1d3-e1f7-5a2c-a377-96d770f13627"
+GraphPlot = "a2cc645c-3eea-5389-862e-a155d0052231"
 JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+Juno = "e5e0dc1b-0480-54bc-9374-aad01c23163d"
 LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
 PyPlot = "d330b81b-6aea-500a-939a-2ce795aea3ee"
 SimpleHypergraphs = "7558dd50-0253-11e9-0eb7-479a738ce184"

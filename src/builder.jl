@@ -49,7 +49,7 @@ function yelpHG(model::Model)
             push!(verticies,v=>0)
         end
         e = add_hyperedge!(h)
-        for v in vertices
+        for v in keys(verticies)
             h[v,e] = 0
         end
         set_hyperedge_meta!(h,meta,e)
@@ -66,7 +66,8 @@ function forecastNumberOfStar(h::Hypergraph)
         avg = 0.0
         treview = 0
         for edge in gethyperedges(h,vertex)
-            for review in get_hyperedge_meta(h,edge)
+            
+            for review in get_hyperedge_meta(h,edge[1])
                 avg += review.stars
                 treview+=1
             end

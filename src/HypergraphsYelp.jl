@@ -8,6 +8,11 @@ using JSON
 using SimpleHypergraphs
 using LightGraphs
 using PyPlot
+using GraphPlot
+using Juno
+using Cairo, Fontconfig
+using Compose
+
 
 export Business, User, Review
 export Model, loadData
@@ -26,6 +31,13 @@ include("builder.jl")
 # buildAnalysis("plots")
 
 h = yelpHG(model)
+
+t = TwoSectionView(h)
+twosection_graph = LightGraphs.SimpleGraph(t)
+
+draw(PNG("mygraph.png", 8cm, 8cm), gplot(twosection_graph))
+
+
 println(forecastNumberOfStar(h))
 
 
