@@ -6,6 +6,13 @@ Modeling the yelp dataset with hypergraphs.
 |--------------|
 | [![Build Status][travis-img]][travis-url]  [![Coverage Status][codecov-img]][codecov-url] <br/> Linux and macOS |
 
+# Execute
+
+Require the folder data with: businees.json, review.json, and user.json. You can download the data from the [yelp.com site](https://www.yelp.com/dataset/download).
+
+- plots.jl build the analysis of the data.
+- taks1.jl execute the task one, on a part of the data (users and review) defined by the number of loading lines.
+
 
 [docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
 [docs-dev-url]: https://github.com/aleant93/HypergraphsYelp.jl/editlatest

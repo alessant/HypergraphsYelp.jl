@@ -17,14 +17,13 @@ export Business, User, Review, Model
 export loadData
 export plotBusinessByCategories, plotBusinessByCities, plotBusinessByStates, plotBusinessByStars
 export plotUsersByReviewCount, plotUsersByFriendsCount,plotUsersByComplimentsCount
+export buildAnalysis
 export yelpHG, forecastNumberOfStar
 
 include("model.jl")
 include("parser.jl")
 include("analyzer.jl")
 include("builder.jl")
-
-
 
 
 end

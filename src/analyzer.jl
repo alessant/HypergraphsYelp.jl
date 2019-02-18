@@ -155,7 +155,7 @@ function plotReviewByDate(model::Model)
 end
 
 
-function buildAnalysis(out::String)
+function buildAnalysis(out::String, model::Model)
 
     plotBusinessByCategories(model)
     savefig(string(out,string(Base.Filesystem.path_separator,"categories.png")))

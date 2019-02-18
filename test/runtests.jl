@@ -4,36 +4,13 @@ using SimpleHypergraphs
 using LightGraphs
 
 
+
 const testdir = dirname(@__FILE__)
 
 
 tests = [
     #"",
 ]
-
-
-@testset "HypergraphsYelp" begin
-    for t in tests
-        tp = joinpath(testdir, "test-$(t).jl")
-        include(tp)
-    end
-end
-
-
-println("Loading data ..")
-@time model = loadData("../data",1000000)
-
-# buildAnalysis("plots")
-
-h = yelpHG(model)
-
-t = TwoSectionView(h)
-twosection_graph = LightGraphs.SimpleGraph(t)
-
-println(size(h)," ----- ",LightGraphs.nv(twosection_graph),",",LightGraphs.ne(twosection_graph))
-
-println(forecastNumberOfStar(h))
-"""
 
 b1 = Business("1","r1","napoli","italy",0.0,0.0,2.0,0,Array{AbstractString,1}())
 b2 = Business("2","r2","avellino","italy",0.0,0.0,3.0,0,Array{AbstractString,1}())
@@ -86,4 +63,3 @@ twosection_graph = LightGraphs.SimpleGraph(t)
 println(size(h)," ----- ",LightGraphs.nv(twosection_graph),",",LightGraphs.ne(twosection_graph))
 
 println(forecastNumberOfStar(h))
-"""
