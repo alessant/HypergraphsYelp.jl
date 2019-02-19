@@ -8,7 +8,7 @@ struct Business
     lng::Float64
     stars::Float64
     reviewcount::Int
-    categories::Array{Symbol}
+    categories::Vector{Symbol}
 end
 
 

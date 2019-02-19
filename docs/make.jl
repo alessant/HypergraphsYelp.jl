@@ -15,7 +15,7 @@ makedocs(
     sitename = "HypergraphsYelp",
     format = Documenter.HTML(),
     modules = [HypergraphsYelp],
-	pages = ["index.md", "reference.md"],
+	pages = ["index.md"],
 	doctest = true
 )
 
