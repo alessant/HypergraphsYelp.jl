@@ -90,7 +90,7 @@ function loadReview(io::IO, lines::Int)::Dict{Symbol,Review}
     return result
 end
 
-function nth(what::Char,s::AbstractArray{UInt8},n::Int,reverse = false)
+function nth(what::Char,s::AbstractVector{UInt8},n::Int,reverse = false)
     c = UInt8(what)
     count = 0
     for ix::Int in (reverse ? (length(s):-1:1) : (1:length(s)) )
