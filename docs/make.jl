@@ -1,3 +1,5 @@
+using Pkg
+Pkg.add("Documenter")
 using Documenter
 
 
@@ -19,7 +21,7 @@ makedocs(
 	doctest = true
 )
 
-deploydocs(
-    repo ="github.com/aleant93/HypergraphsYelp.jl.git",
-	target="build"
-)
+#deploydocs(
+#    repo ="github.com/aleant93/HypergraphsYelp.jl.git",
+#	target="build"
+#)

@@ -1,32 +1,19 @@
 language: julia
 
 os:
-  - osx
   - linux
 
 julia:
   - 1.0
 
+addons:
+  apt:
+    packages:
+      - python3-matplotlib
 
+  
 notifications:
   email: false
 
-jobs:
-  include:
-    - stage: "TestAndDocs"
-      julia: 1.0
-      os: 
-        - linux
-        - osx
-      script:
-        - julia -E 'string("Build folder ", pwd())'
-        - julia -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/pszufe/SimpleHypergraphs.jl")); Pkg.instantiate(); Pkg.build("HypergraphsYelp"); Pkg.test("HypergraphsYelp"; coverage=true)'
-        - ls */* 
-        - julia -E 'string("Docs folder ", pwd())'
-        - julia --project=docs/ -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/pszufe/SimpleHypergraphs.jl")); Pkg.instantiate(); Pkg.develop(PackageSpec(path=pwd()))'        
-        - julia --project=docs/ docs/make.jl        
-        - ls */* 
-
-  
 after_success:
-  - julia -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/pszufe/SimpleHypergraphs.jl")); cd(Pkg.dir("HypergraphsYelp")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())';
+  - julia -e 'using Pkg; cd(Pkg.dir("HypergraphsYelp")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())';
