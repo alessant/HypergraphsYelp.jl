@@ -2,9 +2,9 @@
 
 function yelpHG(model::Model)
 
-    h = Hypergraph{Real,Business,Array{Review,1}}(0,0)
+    h = Hypergraph{Float64,Business,Array{Review,1}}(0,0)
 
-    businesses_ids = Dict{AbstractString,Business}()
+    businesses_ids = Dict{Symbol,Business}()
     verticies_ids = Dict{Business,Int}()
     for business in values(model.businesses)
         push!(businesses_ids, business.id=>business)
@@ -14,7 +14,7 @@ function yelpHG(model::Model)
         push!(verticies_ids, business=>v)
     end
 
-    users_review = Dict{AbstractString, Dict{Int, Array{Review,1}}}()
+    users_review = Dict{Symbol, Dict{Int, Array{Review,1}}}()
     for review in values(model.reviews)
         if haskey(businesses_ids,review.business)#IF I DON'T LOAD ALL BUSINESS
 
@@ -48,7 +48,7 @@ function yelpHG(model::Model)
         end
         e = add_hyperedge!(h)
 
-        verticies = Dict{Int,Real}()
+        verticies = Dict{Int,Float64}()
         for v in keys(ureview)
             h[v,e] = 0
         end
@@ -68,7 +68,7 @@ function forecastNumberOfStar(h::Hypergraph)
             hupred+=1
             continue
         end
-        avgs = Real[]
+        avgs = Float64[]
 
         for edge in gethyperedges(h,vertex)
 

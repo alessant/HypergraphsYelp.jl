@@ -1,4 +1,3 @@
-__precompile__()
 """
 
 """
@@ -9,8 +8,7 @@ using SimpleHypergraphs, SimpleWeightedGraphs
 using LightGraphs
 using PyPlot
 using GraphPlot
-using Juno
-
+using Dates
 
 
 export Business, User, Review, Model
