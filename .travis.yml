@@ -1,7 +1,6 @@
 language: julia
 
 os:
-  - osx
   - linux
 
 julia:
@@ -11,13 +10,14 @@ julia:
 notifications:
   email: false
 
+script:
+  - julia -E 'string("script folder ", pwd())'
+
 jobs:
   include:
     - stage: "TestAndDocs"
       julia: 1.0
-      os: 
-        - linux
-        - osx
+      os: linux
       script:
         - julia -E 'string("Build folder ", pwd())'
         - julia -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/pszufe/SimpleHypergraphs.jl")); Pkg.instantiate(); Pkg.build("HypergraphsYelp"); Pkg.test("HypergraphsYelp"; coverage=true)'
