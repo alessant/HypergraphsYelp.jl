@@ -4,6 +4,7 @@ using SimpleHypergraphs
 using LightGraphs
 
 
+
 #amount of data to load for users and review
 lines = 100
 
@@ -24,17 +25,3 @@ println(keys(review_star_map))
 #logfile = open("task1.log", "a")
 #write(logfile, data)
 #close(outRead)
-"""
-function buildReviewsByStars(model::Model)
-
-    result = Dict{Int,Array{Review}}()
-    for review in values(model.reviews)
-
-        if !haskey(result, review.stars)
-            push!(result, review.stars=>Vector{Review}())
-        end
-        push!(result[review.stars],review)
-    end
-    result
-end
-"""

@@ -1,14 +1,17 @@
+__precompile__()
 """
 
 """
 module HypergraphsYelp
 
 using JSON
-using SimpleHypergraphs, SimpleWeightedGraphs
-using LightGraphs
+using SimpleHypergraphs
+using LightGraphs, SimpleWeightedGraphs
 using PyPlot
 using GraphPlot
+using Juno
 using Dates
+
 
 
 export Business, User, Review, Model
