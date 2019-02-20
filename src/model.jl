@@ -1,39 +1,39 @@
 
 struct Business
-    id::AbstractString
-    name::AbstractString
-    city::AbstractString
-    state::AbstractString
-    lat::Real
-    lng::Real
-    stars::Real
+    id::Symbol
+    name::Symbol
+    city::Symbol
+    state::Symbol
+    lat::Float64
+    lng::Float64
+    stars::Float64
     reviewcount::Int
-    categories::Array{AbstractString}
+    categories::Vector{Symbol}
 end
 
 
 struct User
-    id::AbstractString
-    name::AbstractString
+    id::Symbol
     reviewcount::Int
     totcompliment::Int
-    avgstars::Real
-    friends::Vector{AbstractString}
+    avgstars::Float64
+    friends::Vector{Symbol}
 end
 
 struct Review
-    id::AbstractString
-    user::AbstractString
-    business::AbstractString
+    id::Symbol
+    user::Symbol
+    business::Symbol
     stars::Int
-    date::AbstractString
+    date::DateTime
     useful::Int
     funny::Int
     cool::Int
 end
 
+
 struct Model
-    businesses::Dict{String,Business}
-    users::Dict{String,User}
-    reviews::Dict{String,Review}
+    businesses::Dict{Symbol,Business}
+    users::Dict{Symbol,User}
+    reviews::Dict{Symbol,Review}
 end

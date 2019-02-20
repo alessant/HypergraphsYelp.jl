@@ -1,8 +1,8 @@
 
 function plotBusinessByCategories(model::Model)
 
-    data = Dict{String,Int64}()
-    maxs = Dict{String,Int64}()
+    data = Dict{Symbol,Int64}()
+    maxs = Dict{Symbol,Int64}()
 
     for business in values(model.businesses)
         for category in business.categories
@@ -90,7 +90,7 @@ end
 
 function plotBusinessByStars(model::Model)
 
-    data = Real[]
+    data = Float64[]
 
     for business in  values(model.businesses)
         push!(data,business.stars)

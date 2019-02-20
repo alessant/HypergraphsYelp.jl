@@ -1,25 +1,24 @@
 
 
 function loadBusiness(io::IO, lines::Int)
-    result = Dict{String,Business}()
+    result = Dict{Symbol,Business}()
     counter = 0
-
     while counter < lines && !eof(io)
         line = readline(io)
         json = JSON.parse(line)
+        id = Symbol(json["business_id"])
         b = Business(
-               json["business_id"],
-               json["name"],
-               json["city"],
-               json["state"],
+               id,
+               Symbol(json["name"]),
+               Symbol(json["city"]),
+               Symbol(json["state"]),
                json["latitude"],
                json["longitude"],
                json["stars"],
                json["review_count"],
-               json["categories"]!=nothing ? map(strip, split(json["categories"],",")) : Vector{String}()
+               json["categories"]!=nothing ? Symbol.(map(strip, split(json["categories"],","))) : Symbol[]
          )
-         push!(result,json["business_id"]=>b)
-
+         result[id] = b
          counter += 1
     end
     return result
@@ -27,7 +26,7 @@ end
 
 
 function loadUsers(io::IO, lines::Int)
-    result = Dict{String,User}()
+    result = Dict{Symbol,User}()
     counter = 0
 
     while counter < lines && !eof(io)
@@ -48,46 +47,58 @@ function loadUsers(io::IO, lines::Int)
             json["compliment_writer"] +
             json["compliment_photos"]
 
+        id = Symbol(json["user_id"])
         b = User(
-            json["user_id"],
-            json["name"],
+            id,
             json["review_count"],
             totcompliments,
             json["average_stars"],
-            json["friends"]!=nothing ?  map(strip, split(json["friends"],",")) : Vector{String}()
+            json["friends"]!=nothing ?  Symbol.(map(strip, split(json["friends"],","))) : Symbol[]
         )
-        push!(result,json["user_id"]=>b)
-
+        result[id]=b
         counter += 1
     end
     return result
 end
 
 
-function loadReview(io::IO, lines::Int)
-    result = Dict{String,Review}()
+function loadReview(io::IO, lines::Int)::Dict{Symbol,Review}
+
+    result = Dict{Symbol,Review}()
     counter = 0
 
     while counter < lines && !eof(io)
-        line = readline(io)
-        json = JSON.parse(line)
+        line = codeunits(readline(io))
+        a1 = view(line,1:(nth(',',line,7)-1))
+        a2 = view(line,nth(',',line,1,true):length(line))
+
+        json = JSON.parse(String(vcat(a1,a2)))
+        id = Symbol(json["review_id"])
         b = Review(
-            json["review_id"],
-            json["user_id"],
-            json["business_id"],
+            id,
+            Symbol(json["user_id"]),
+            Symbol(json["business_id"]),
             json["stars"],
-            json["date"],
+            DateTime(json["date"],dateformat"yyyy-mm-dd HH:MM:SS"),
             json["useful"],
             json["funny"],
             json["cool"]
         )
-        push!(result,json["review_id"]=>b)
-
+        result[id]=b
         counter += 1
     end
     return result
 end
 
+function nth(what::Char,s::AbstractVector{UInt8},n::Int,reverse = false)
+    c = UInt8(what)
+    count = 0
+    for ix::Int in (reverse ? (length(s):-1:1) : (1:length(s)) )
+        (s[ix] == c) && (count += 1)
+        count >= n && return ix
+    end
+    return -1
+end
 
 
 """
