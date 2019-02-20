@@ -15,16 +15,26 @@ println("Loading data ..")
 #(outRead, outWrite) = redirect_stdout()
 h = yelpHG(model)
 
-t = TwoSectionView(h)
-twosection_graph = LightGraphs.SimpleGraph(t)
+review_star_map = buildReviewsByStars(model)
 
-println(size(h)," ----- ",LightGraphs.nv(twosection_graph),",",LightGraphs.ne(twosection_graph))
-
-println(forecastNumberOfStar(h))
-
+println(keys(review_star_map))
 
 #close(outWrite)
 #data = readavailable(outRead)
 #logfile = open("task1.log", "a")
 #write(logfile, data)
 #close(outRead)
+"""
+function buildReviewsByStars(model::Model)
+
+    result = Dict{Int,Array{Review}}()
+    for review in values(model.reviews)
+
+        if !haskey(result, review.stars)
+            push!(result, review.stars=>Vector{Review}())
+        end
+        push!(result[review.stars],review)
+    end
+    result
+end
+"""

@@ -18,7 +18,7 @@ export loadData
 export plotBusinessByCategories, plotBusinessByCities, plotBusinessByStates, plotBusinessByStars
 export plotUsersByReviewCount, plotUsersByFriendsCount,plotUsersByComplimentsCount
 export buildAnalysis
-export yelpHG, forecastNumberOfStar
+export yelpHG, forecastNumberOfStar, buildReviewsByStars
 
 include("model.jl")
 include("parser.jl")
