@@ -2,7 +2,7 @@ using Test
 using HypergraphsYelp
 using SimpleHypergraphs
 using LightGraphs
-
+using Dates
 
 
 const testdir = dirname(@__FILE__)
@@ -12,29 +12,29 @@ tests = [
     #"",
 ]
 
-b1 = Business("1","r1","napoli","italy",0.0,0.0,2.0,0,Array{AbstractString,1}())
-b2 = Business("2","r2","avellino","italy",0.0,0.0,3.0,0,Array{AbstractString,1}())
-b3 = Business("3","r3","caserta","italy",0.0,0.0,3.0,0,Array{AbstractString,1}())
-b4 = Business("4","r4","napoli","italy",0.0,0.0,2.5,0,Array{AbstractString,1}())
-b5 = Business("5","r5","avellino","italy",0.0,0.0,2.0,0,Array{AbstractString,1}())
+b1 = Business(:a,:r1,:napoli,:italy,0.0,0.0,2.0,0,Symbol[])
+b2 = Business(:b,:r2,:avellino,:italy,0.0,0.0,3.0,0,Symbol[])
+b3 = Business(:c,:r3,:caserta,:italy,0.0,0.0,3.0,0,Symbol[])
+b4 = Business(:d,:r4,:napoli,:italy,0.0,0.0,2.5,0,Symbol[])
+b5 = Business(:e,:r5,:avellino,:italy,0.0,0.0,2.0,0,Symbol[])
 
 
-u1 = User("1","bob",0,0,0,Array{AbstractString,1}())
-u2 = User("2","alice",0,0,0,Array{AbstractString,1}())
+u1 = User(:a,0,0,0,Symbol[])
+u2 = User(:b,0,0,0,Symbol[])
 
-r1 = Review("1",u1.id,b1.id,3.0,"",0,0,0)
-r2 = Review("2",u1.id,b2.id,3.0,"",0,0,0)
-r3 = Review("3",u1.id,b3.id,3.0,"",0,0,0)
-r4 = Review("4",u1.id,b4.id,3.0,"",0,0,0)
+r1 = Review(:a,u1.id,b1.id,3.0,now(),0,0,0)
+r2 = Review(:b,u1.id,b2.id,3.0,now(),0,0,0)
+r3 = Review(:c,u1.id,b3.id,3.0,now(),0,0,0)
+r4 = Review(:d,u1.id,b4.id,3.0,now(),0,0,0)
 
-r5 = Review("5",u2.id,b1.id,2.0,"",0,0,0)
-r6 = Review("6",u2.id,b4.id,2.0,"",0,0,0)
-r7 = Review("7",u2.id,b5.id,2.0,"",0,0,0)
+r5 = Review(:e,u2.id,b1.id,2.0,now(),0,0,0)
+r6 = Review(:f,u2.id,b4.id,2.0,now(),0,0,0)
+r7 = Review(:g,u2.id,b5.id,2.0,now(),0,0,0)
 
 
-businesses = Dict{String,Business}()
-users = Dict{String,User}()
-reviews = Dict{String,Review}()
+businesses = Dict{Symbol,Business}()
+users = Dict{Symbol,User}()
+reviews = Dict{Symbol,Review}()
 
 push!(businesses,b1.id=>b1)
 push!(businesses,b2.id=>b2)

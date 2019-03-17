@@ -5,11 +5,12 @@ __precompile__()
 module HypergraphsYelp
 
 using JSON
-using SimpleHypergraphs, SimpleWeightedGraphs
-using LightGraphs
+using SimpleHypergraphs
+using LightGraphs, SimpleWeightedGraphs
 using PyPlot
 using GraphPlot
 using Juno
+using Dates
 
 
 
@@ -18,7 +19,7 @@ export loadData
 export plotBusinessByCategories, plotBusinessByCities, plotBusinessByStates, plotBusinessByStars
 export plotUsersByReviewCount, plotUsersByFriendsCount,plotUsersByComplimentsCount
 export buildAnalysis
-export yelpHG, forecastNumberOfStar
+export yelpHG
 
 include("model.jl")
 include("parser.jl")

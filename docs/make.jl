@@ -1,3 +1,5 @@
+using Pkg
+Pkg.add("Documenter")
 using Documenter
 
 
@@ -15,11 +17,11 @@ makedocs(
     sitename = "HypergraphsYelp",
     format = Documenter.HTML(),
     modules = [HypergraphsYelp],
-	pages = ["index.md", "reference.md"],
+	pages = ["index.md"],
 	doctest = true
 )
 
-deploydocs(
-    repo ="github.com/aleant93/HypergraphsYelp.jl.git",
-	target="build"
-)
+#deploydocs(
+#    repo ="github.com/aleant93/HypergraphsYelp.jl.git",
+#	target="build"
+#)
