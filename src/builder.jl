@@ -58,3 +58,49 @@ function yelpHG(model::Model)
     return h
 
 end
+
+function cleanHG(h::Hypergraph)
+
+    nh = Hypergraph{Float64,Business,Array{Review,1}}(0,0)
+
+    vertices= Set{Int64}()
+
+
+    for he in 1:size(h)[2]
+        vs = getvertices(h,he)
+        if length(vs) > 1
+            for vns in keys(vs)
+                push!(vertices,vns)
+            end
+        end
+    end
+
+
+    mapvtonv = Dict{Int64,Int64}()
+
+    for v in vertices
+
+        nv = SimpleHypergraphs.add_vertex!(nh)
+
+        set_vertex_meta!(nh, get_vertex_meta(h,v), nv)
+        push!(mapvtonv,v=>nv)
+    end
+
+
+    for he in 1:size(h)[2]
+        vs = getvertices(h,he)
+        if length(vs) <= 1 continue end
+
+        e = add_hyperedge!(nh)
+
+        for v1 in keys(vs)
+            if haskey(mapvtonv,v1)
+                nh[mapvtonv[v1],e] = 0
+            end
+        end
+
+        set_hyperedge_meta!(nh,get_hyperedge_meta(h,he),e)
+    end
+
+    return nh
+end

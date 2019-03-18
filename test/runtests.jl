@@ -12,6 +12,17 @@ tests = [
     #"",
 ]
 
+p1 = [1,1,1,2,2,2,3,3,3,3,1,1,3,2,2,2,2,2,2,2]
+
+p2 = [1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2]
+
+@assert nmi(p1,p2) ≈ 0.10890790243931674
+
+p2 = [10,10,10,10,10,10,10,10,10,10,2,2,2,2,2,2,2,2,2,2]
+
+println(nmi(p1,p2))
+
+"""
 b1 = Business(:a,:r1,:napoli,:italy,0.0,0.0,2.0,0,Symbol[])
 b2 = Business(:b,:r2,:avellino,:italy,0.0,0.0,3.0,0,Symbol[])
 b3 = Business(:c,:r3,:caserta,:italy,0.0,0.0,3.0,0,Symbol[])
@@ -63,3 +74,4 @@ twosection_graph = LightGraphs.SimpleGraph(t)
 println(size(h)," ----- ",LightGraphs.nv(twosection_graph),",",LightGraphs.ne(twosection_graph))
 
 println(forecastNumberOfStar(h))
+"""

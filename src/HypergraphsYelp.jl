@@ -19,12 +19,13 @@ export loadData
 export plotBusinessByCategories, plotBusinessByCities, plotBusinessByStates, plotBusinessByStars
 export plotUsersByReviewCount, plotUsersByFriendsCount,plotUsersByComplimentsCount
 export buildAnalysis
-export yelpHG
+export yelpHG, cleanHG
+export nmi
 
 include("model.jl")
 include("parser.jl")
 include("analyzer.jl")
 include("builder.jl")
-
+include("nmi.jl")
 
 end

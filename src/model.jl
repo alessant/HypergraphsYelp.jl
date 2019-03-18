@@ -31,7 +31,6 @@ struct Review
     cool::Int
 end
 
-
 struct Model
     businesses::Dict{Symbol,Business}
     users::Dict{Symbol,User}
